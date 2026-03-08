@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000';
+const API_URL = '';
 
 function toggleForm() {
     const loginForm = document.getElementById('login-form');

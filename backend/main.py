@@ -1,10 +1,12 @@
-from fastapi import FastAPI, Depends, HTTPException, status, Body
+from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from datetime import datetime, timedelta, timezone
 import secrets
+import os
 
 from backend.database import engine, Base, get_db, User, Server, VPNProfile
 from backend.auth import get_password_hash, verify_password, create_access_token, SECRET_KEY, ALGORITHM
@@ -64,7 +66,6 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
     hashed_password = get_password_hash(user_data.password)
     new_user = User(username=user_data.username, hashed_password=hashed_password)
 
-    # First registered user becomes admin
     if db.query(User).count() == 0:
         new_user.is_admin = True
 
@@ -151,7 +152,6 @@ def download_profile(profile_id: int, current_user: User = Depends(get_current_u
     filename = f"vpn-{profile.server.location.lower()}.conf"
     return {"filename": filename, "content": config_str}
 
-# Node Agent Endpoints
 @app.post("/agent/status")
 def update_status(status: StatusUpdate, agent_token: str, db: Session = Depends(get_db)):
     server = db.query(Server).filter(Server.agent_token == agent_token).first()
@@ -175,3 +175,6 @@ def get_peers(agent_token: str, db: Session = Depends(get_db)):
     profiles = db.query(VPNProfile).filter(VPNProfile.server_id == server.id).all()
     peers = [{"public_key": p.public_key, "allowed_ips": f"{p.internal_ip}/32"} for p in profiles]
     return peers
+
+# API prefix and static mount
+app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
