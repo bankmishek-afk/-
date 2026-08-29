@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VPN Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <nav class="bg-blue-600 p-4 shadow-lg text-white">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">VPN Service Dashboard</h1>
+            <div>
+                <span id="welcome-user" class="mr-4"></span>
+                <button onclick="logout()" class="bg-red-500 hover:bg-red-700 py-2 px-4 rounded text-sm font-bold">Выйти</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-8">
+        <div id="admin-panel" class="hidden mb-12">
+            <h2 class="text-2xl font-bold mb-4">Администрирование</h2>
+            <div class="bg-white p-6 rounded shadow-md grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Добавить VPN сервер</h3>
+                    <div class="mb-4">
+                        <input type="text" id="srv-name" placeholder="Название (напр. US-East)" class="border p-2 w-full mb-2">
+                        <input type="text" id="srv-location" placeholder="Локация (напр. USA)" class="border p-2 w-full mb-2">
+                        <input type="text" id="srv-ip" placeholder="IP адрес" class="border p-2 w-full mb-2">
+                        <input type="text" id="srv-pubkey" placeholder="WireGuard Public Key" class="border p-2 w-full mb-2">
+                        <button onclick="addServer()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Добавить</button>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Статус серверов</h3>
+                    <div id="server-stats" class="space-y-4">
+                        <!-- Сервера будут загружены сюда -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="md:col-span-1">
+                <h2 class="text-2xl font-bold mb-4">Доступные локации</h2>
+                <div id="server-list" class="space-y-4">
+                    <!-- Список серверов будет здесь -->
+                </div>
+            </div>
+
+            <div class="md:col-span-2">
+                <h2 class="text-2xl font-bold mb-4">Мои профили VPN</h2>
+                <div id="profile-list" class="space-y-4">
+                    <!-- Профили будут здесь -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        if (!localStorage.getItem('token')) {
+            window.location.href = 'index.html';
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            initDashboard();
+        });
+    </script>
+</body>
+</html>

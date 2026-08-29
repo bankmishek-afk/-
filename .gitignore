@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.db
+server.log
+backend/test_app.db
+node_modules/
+.env
