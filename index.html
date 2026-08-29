@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ModaLine — маркетплейс одежды</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <nav class="nav">
+      <div class="logo">ModaLine</div>
+      <div class="nav-links">
+        <a href="#catalog">Каталог</a>
+        <a href="#brands">Бренды</a>
+        <a href="#benefits">Преимущества</a>
+        <a href="#app">Приложение</a>
+      </div>
+      <button class="ghost">Войти</button>
+    </nav>
+    <div class="hero-content">
+      <div class="hero-text">
+        <p class="tag">Маркетплейс одежды</p>
+        <h1>Одежда, которая подстраивается под ваш стиль</h1>
+        <p class="subtitle">
+          Персональные подборки от стилистов, мгновенная доставка и тысячи брендов — все
+          в одном приложении.
+        </p>
+        <div class="hero-actions">
+          <button class="primary">Начать покупки</button>
+          <button class="secondary">Стать продавцом</button>
+        </div>
+        <div class="hero-stats">
+          <div>
+            <h3>8 200+</h3>
+            <span>брендов</span>
+          </div>
+          <div>
+            <h3>2 часа</h3>
+            <span>средняя доставка</span>
+          </div>
+          <div>
+            <h3>98%</h3>
+            <span>рейтинг клиентов</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="card-header">
+          <span>Сегодня в тренде</span>
+          <span class="pill">-20%</span>
+        </div>
+        <div class="card-image"></div>
+        <div class="card-body">
+          <h4>Осенний капсула-лук</h4>
+          <p>Собранный стилистом комплект из 6 вещей.</p>
+          <button class="primary">Добавить в корзину</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="catalog" class="section">
+    <div class="section-header">
+      <div>
+        <h2>Каталог</h2>
+        <p>Готовые подборки для разных сценариев — от офиса до вечерних выходов.</p>
+      </div>
+      <button class="ghost">Смотреть все</button>
+    </div>
+    <div class="filters">
+      <button class="filter active">Все</button>
+      <button class="filter">Новые коллекции</button>
+      <button class="filter">Streetwear</button>
+      <button class="filter">Эко-линейки</button>
+      <button class="filter">Премиум</button>
+    </div>
+    <div class="grid">
+      <article class="product">
+        <div class="product-image one"></div>
+        <div class="product-body">
+          <h3>Minimal Suit Set</h3>
+          <p>Костюм-тройка с итальянской шерстью</p>
+          <div class="product-meta">
+            <span>₽19 800</span>
+            <button>В корзину</button>
+          </div>
+        </div>
+      </article>
+      <article class="product">
+        <div class="product-image two"></div>
+        <div class="product-body">
+          <h3>Urban Silk Dress</h3>
+          <p>Шелковое платье, 4 оттенка, длина миди</p>
+          <div class="product-meta">
+            <span>₽8 450</span>
+            <button>В корзину</button>
+          </div>
+        </div>
+      </article>
+      <article class="product">
+        <div class="product-image three"></div>
+        <div class="product-body">
+          <h3>Weekend Denim Pack</h3>
+          <p>Джинсовая капсула с курткой и брюками</p>
+          <div class="product-meta">
+            <span>₽12 900</span>
+            <button>В корзину</button>
+          </div>
+        </div>
+      </article>
+      <article class="product">
+        <div class="product-image four"></div>
+        <div class="product-body">
+          <h3>Sporty Flow</h3>
+          <p>Комплект для активного отдыха и путешествий</p>
+          <div class="product-meta">
+            <span>₽6 300</span>
+            <button>В корзину</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="brands" class="section alt">
+    <div class="section-header">
+      <h2>Бренды и дизайнеры</h2>
+      <p>Мы собрали локальные и мировые бренды, которые создают коллекции для ModаLine.</p>
+    </div>
+    <div class="brand-row">
+      <div class="brand">ALMA</div>
+      <div class="brand">NEON</div>
+      <div class="brand">BREEZE</div>
+      <div class="brand">MARCEL</div>
+      <div class="brand">ORBIT</div>
+      <div class="brand">LYRA</div>
+    </div>
+    <div class="brand-callout">
+      <div>
+        <h3>Личный стилист</h3>
+        <p>
+          Заполните анкету, и мы соберем индивидуальную капсулу, сохраняя ваш бюджет и
+          предпочтения.
+        </p>
+      </div>
+      <button class="primary">Заполнить анкету</button>
+    </div>
+  </section>
+
+  <section id="benefits" class="section">
+    <div class="section-header">
+      <h2>Почему ModaLine</h2>
+      <p>Технологии и сервисы, которые делают покупки быстрыми и приятными.</p>
+    </div>
+    <div class="benefits">
+      <div class="benefit">
+        <h4>Смарт-размеры</h4>
+        <p>Алгоритм определяет точную посадку по трем параметрам.</p>
+      </div>
+      <div class="benefit">
+        <h4>Доставка 2 часа</h4>
+        <p>Экспресс-курьеры в 45 городах России.</p>
+      </div>
+      <div class="benefit">
+        <h4>Персональные коллекции</h4>
+        <p>Стилисты обновляют подборки каждую неделю.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="app" class="section app">
+    <div class="app-card">
+      <div>
+        <h2>Скачайте приложение</h2>
+        <p>Сканируйте QR-код и получайте уведомления о скидках любимых брендов.</p>
+        <div class="app-actions">
+          <button class="primary">App Store</button>
+          <button class="secondary">Google Play</button>
+        </div>
+      </div>
+      <div class="qr"></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>
+      <div class="logo">ModaLine</div>
+      <p>Маркетплейс одежды нового поколения.</p>
+    </div>
+    <div class="footer-links">
+      <div>
+        <h5>Покупателям</h5>
+        <a href="#">Доставка</a>
+        <a href="#">Возвраты</a>
+        <a href="#">Подарочные карты</a>
+      </div>
+      <div>
+        <h5>Партнерам</h5>
+        <a href="#">Личный кабинет</a>
+        <a href="#">Условия</a>
+        <a href="#">Контакты</a>
+      </div>
+      <div>
+        <h5>Соцсети</h5>
+        <a href="#">Instagram</a>
+        <a href="#">Telegram</a>
+        <a href="#">VK</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
