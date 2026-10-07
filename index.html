@@ -2,132 +2,199 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Загрузка...</title>
+<title>Проверка...</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   html, body {
     width: 100%;
     height: 100%;
-    overflow: hidden;
-    font-family: Arial, Helvetica, sans-serif;
-  }
-
-  /* Первый экран — красный фон со счётом */
-  #countdown-screen {
-    position: fixed;
-    inset: 0;
-    background: red;
+    font-family: Consolas, "Courier New", monospace;
+    background: #0d0d0d;
+    color: #e6e6e6;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: white;
-    text-align: center;
-    z-index: 10;
+    overflow: hidden;
   }
 
-  #countdown-text {
+  .box {
+    max-width: 800px;
+    padding: 40px;
+    text-align: center;
+    border-radius: 12px;
+    animation: fadeIn .4s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .human {
+    background: #0f2a12;
+    border: 2px solid #2ecc71;
+    color: #8dffa8;
+  }
+
+  .bot {
+    background: #2a0f0f;
+    border: 2px solid #ff2e2e;
+    color: #ff8d8d;
+  }
+
+  .title {
     font-size: 2rem;
-    margin-bottom: 30px;
-    text-shadow: 2px 2px 6px rgba(0,0,0,.5);
-  }
-
-  #countdown-number {
-    font-size: 10rem;
     font-weight: bold;
-    text-shadow: 4px 4px 12px rgba(0,0,0,.6);
-    animation: pulse 1s infinite;
+    margin-bottom: 20px;
+    word-break: break-word;
   }
 
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.15); }
-  }
-
-  /* Второй экран — спиннер загрузки */
-  #loading-screen {
-    position: fixed;
-    inset: 0;
-    background: #000;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 20;
-  }
-
-  .spinner {
-    width: 90px;
-    height: 90px;
-    border: 8px solid rgba(255,255,255,.15);
-    border-top: 8px solid #ff0000;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-
-  #loading-text {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: black;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    font-size: 1.2rem;
-    letter-spacing: 1px;
-    border-top: 1px solid #222;
+  .reason {
+    font-size: 1rem;
+    opacity: .75;
+    margin-top: 15px;
   }
 </style>
 </head>
 <body>
 
-  <!-- Экран со счётом -->
-  <div id="countdown-screen">
-    <div id="countdown-text">Ты будешь зарикролен через....</div>
-    <div id="countdown-number">3</div>
-  </div>
-
-  <!-- Экран загрузки -->
-  <div id="loading-screen">
-    <div class="spinner"></div>
-    <div id="loading-text">Redirecting &amp; RickRolling please Wait.....</div>
-  </div>
+<div id="result" class="box">
+  <div class="title">Проверяем...</div>
+</div>
 
 <script>
-  const REDIRECT_URL = "https://m.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1&pp=ygUIUmlja1JvbGygBwE%3D";
+(function () {
+  const resultEl = document.getElementById("result");
 
-  const numberEl = document.getElementById("countdown-number");
-  const countdownScreen = document.getElementById("countdown-screen");
-  const loadingScreen = document.getElementById("loading-screen");
+  /* ======================
+     ПРИЗНАКИ БОТА
+     ====================== */
 
-  let count = 3;
+  const botSignatures = [
+    // Классические headless и парсеры
+    "headlesschrome", "phantomjs", "puppeteer", "playwright",
+    "selenium", "webdriver", "htmlunit", "jsdom",
+    // Поисковые и SEO-боты
+    "googlebot", "bingbot", "yandexbot", "duckduckbot",
+    "baiduspider", "ahrefsbot", "semrushbot", "mj12bot",
+    "dotbot", "petalbot", "bytespider", "gptbot", "chatgpt",
+    "claudebot", "anthropic", "ccbot", "perplexity",
+    // Разные краулеры
+    "crawler", "spider", "scraper", "curl/", "wget",
+    "python-requests", "python-urllib", "aiohttp",
+    "axios", "okhttp", "go-http-client", "java/", "libwww",
+    "postmanruntime", "insomnia", "httpclient",
+    "facebookexternalhit", "telegrambot", "whatsapp",
+    "slackbot", "discordbot", "twitterbot", "linkedinbot",
+    "applebot", "archive.org_bot", "uptimerobot", "pingdom",
+    "statuscake", "nagios", "zabbix", "monitoring",
+    // Пустой/подозрительный
+    ""
+  ];
 
-  function tick() {
-    numberEl.textContent = count;
+  let botReasons = [];
 
-    if (count === 0) {
-      // Показываем экран загрузки
-      countdownScreen.style.display = "none";
-      loadingScreen.style.display = "flex";
-
-      // Через небольшую паузу — редирект
-      setTimeout(() => {
-        window.location.href = REDIRECT_URL;
-      }, 1500);
-      return;
+  /* 1. Проверка User-Agent */
+  const ua = (navigator.userAgent || "").toLowerCase();
+  for (const sig of botSignatures) {
+    if (sig && ua.includes(sig)) {
+      botReasons.push("Обнаружен признак бота в User-Agent: " + sig);
+      break;
     }
-
-    count--;
-    setTimeout(tick, 1000);
   }
 
-  tick();
+  /* 2. navigator.webdriver — включается у Selenium / Puppeteer */
+  if (navigator.webdriver === true) {
+    botReasons.push("navigator.webdriver = true (автоматизированный браузер)");
+  }
+
+  /* 3. Нет languages или пустой массив */
+  if (!navigator.languages || navigator.languages.length === 0) {
+    botReasons.push("navigator.languages пуст");
+  }
+
+  /* 4. Нет plugins (у большинства реальных браузеров они есть, у headless — нет) */
+  if (navigator.plugins && navigator.plugins.length === 0 && !/firefox/i.test(ua)) {
+    botReasons.push("Нет плагинов браузера");
+  }
+
+  /* 5. Нет платформы или подозрительная */
+  if (!navigator.platform) {
+    botReasons.push("navigator.platform отсутствует");
+  }
+
+  /* 6. Отсутствует window.chrome у Chrome-подобных UA (частый признак headless) */
+  if (/chrome|chromium|edg/i.test(ua) && !window.chrome) {
+    botReasons.push("Chrome-UA без window.chrome (headless)");
+  }
+
+  /* 7. Очень маленький или пустой экран */
+  if (screen.width === 0 || screen.height === 0) {
+    botReasons.push("screen пустой");
+  }
+  if (screen.width < 200 || screen.height < 200) {
+    botReasons.push("Слишком маленький экран (возможно headless)");
+  }
+
+  /* 8. Размеры окна совпадают с экраном и равны 0 */
+  if (window.outerWidth === 0 && window.outerHeight === 0) {
+    botReasons.push("outerWidth/outerHeight = 0");
+  }
+
+  /* 9. Отсутствие аппаратной конкуренции */
+  if (!navigator.hardwareConcurrency || navigator.hardwareConcurrency < 1) {
+    botReasons.push("hardwareConcurrency отсутствует");
+  }
+
+  /* 10. Отсутствие deviceMemory (у большинства мобильных/десктопов есть) */
+  if (navigator.deviceMemory === undefined) {
+    botReasons.push("navigator.deviceMemory отсутствует");
+  }
+
+  /* 11. Отсутствие touch-событий при мобильном UA */
+  const isMobileUA = /android|iphone|ipad|ipod|mobile/i.test(ua);
+  if (isMobileUA && !("ontouchstart" in window)) {
+    botReasons.push("Мобильный UA без touch-событий");
+  }
+
+  /* 12. Несовпадение языков и локали */
+  if (navigator.language && navigator.languages &&
+      navigator.languages.length > 0 &&
+      navigator.languages[0] !== navigator.language) {
+    botReasons.push("Несовпадение language/languages[0]");
+  }
+
+  /* 13. Отсутствие Referrer при наличии истории */
+  // (мягкий признак, в реальной жизни нужен осторожно)
+  if (document.referrer === "" && window.history.length > 1) {
+    // не считаем это за ошибку — просто закомментировано
+  }
+
+  /* ======================
+     ВЫВОД
+     ====================== */
+
+  function render(isBot) {
+    if (isBot) {
+      resultEl.className = "box bot";
+      resultEl.innerHTML =
+        '<div class="title">301 ИДИ НАХРЕН КУСОК ЖЕЛЕЗА BOT DETECTED</div>' +
+        '<div class="reason">' + botReasons.map(r => "• " + r).join("<br>") + '</div>';
+    } else {
+      resultEl.className = "box human";
+      resultEl.innerHTML =
+        '<div class="title">Проходите вы человек</div>' +
+        '<div class="reason">Признаков автоматизации не обнаружено.</div>';
+    }
+  }
+
+  /* Небольшая задержка, чтобы бот не увидел ответ мгновенно */
+  setTimeout(function () {
+    render(botReasons.length > 0);
+  }, 400);
+
+})();
 </script>
 </body>
 </html>
